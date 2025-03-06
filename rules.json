@@ -1,0 +1,6 @@
+{
+    "rules": [
+        {"attack": "Port Scan", "pattern": "common_ports", "src_ip": "any"},
+        {"attack": "DoS Attack", "pattern": "high_traffic", "threshold": 1000}
+    ]
+}
