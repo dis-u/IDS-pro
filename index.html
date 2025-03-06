@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intrusion Detection System Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-8">
+        <h1 class="text-4xl font-bold text-center mb-8">Intrusion Detection System Dashboard</h1>
+
+        <div class="grid grid-cols-2 gap-8">
+            <!-- Network Scan Section -->
+            <div class="bg-white p-6 rounded-2xl shadow-lg">
+                <h2 class="text-2xl font-semibold mb-4">Network Scanner</h2>
+                <form id="scan-form" action="/scan" method="POST" class="flex space-x-4">
+                    <input type="text" name="ip_range" placeholder="Enter IP Range (e.g., 192.168.1.0/24)" class="p-2 border rounded w-full">
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Scan</button>
+                </form>
+                <div id="scan-results" class="mt-6">
+                    <h3 class="text-xl font-medium">Scan Results:</h3>
+                    <ul id="device-list" class="list-disc pl-6"></ul>
+                </div>
+            </div>
+
+            <!-- Real-time Alerts Section -->
+            <div class="bg-white p-6 rounded-2xl shadow-lg">
+                <h2 class="text-2xl font-semibold mb-4">Real-time Alerts</h2>
+                <ul id="alerts-list" class="list-disc pl-6 text-red-500"></ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.min.js"></script>
+    <script>
+        const socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        socket.on('new_alert', function(data) {
+            const alertsList = document.getElementById('alerts-list');
+            const newAlert = document.createElement('li');
+            newAlert.textContent = data.message;
+            alertsList.appendChild(newAlert);
+        });
+    </script>
+</body>
+</html>
